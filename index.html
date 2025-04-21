@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">حب على طول</title>
+    <style>
+        body {
+            background-image: url('https://nie-images.s3.amazonaws.com/gall_content/2017/11/2017_11$ugcphoto128_Tuesday_2017_222818414.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 3.5em;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            text-align: center;
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 10px 0;
+            border-radius: 10px;
+            z-index: 10;
+        }
+
+        .card {
+            position: absolute;
+            bottom: 220px;
+            left: 20px; /* أقصى الشمال */
+            transform: perspective(1000px) rotateY(0deg);
+            width: 300px;
+            height: 300px;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            z-index: 10;
+        }
+
+        .card:hover {
+            transform: perspective(1000px) rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background-image: url('https://i.giphy.com/iGqP4DYXe4zVJbCY5N.webp');
+            background-size: cover;
+            background-position: center;
+        }
+
+        h4 {
+            font-size: 1.5em;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0;
+            animation: fadeIn 1s ease-in forwards;
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .change-quote-btn {
+            position: absolute;
+            bottom: 160px;
+            left: 20px; /* أقصى الشمال */
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s;
+            z-index: 10;
+            width: 300px; /* نفس عرض البطاقة */
+            text-align: center;
+        }
+
+        .change-quote-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .share-btn {
+            position: absolute;
+            bottom: 100px;
+            left: 20px; /* أقصى الشمال */
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s;
+            z-index: 10;
+            width: 300px; /* نفس عرض البطاقة */
+            text-align: center;
+        }
+
+        .share-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .language-btn {
+            position: absolute;
+            top: 100px;
+            left: 20px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s;
+            z-index: 10;
+        }
+
+        .language-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .comments-section {
+            position: absolute;
+            bottom: 20px;
+            left: 20px; /* أقصى الشمال */
+            width: 300px; /* نفس عرض البطاقة */
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .comments-section h3 {
+            color: #ffffff;
+            text-align: center;
+            margin: 0 0 10px;
+        }
+
+        .comment-input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .comment-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .comment-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .comments-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        .comment {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            color: #ffffff;
+        }
+
+        .mirage {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: transparent;
+            pointer-events: none;
+            filter: url(#distort);
+            transform: translate(-50%, -50%);
+            mix-blend-mode: overlay;
+            z-index: 5;
+        }
+
+        svg {
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+                padding: 8px 0;
+            }
+
+            .card {
+                bottom: 200px;
+                left: 10px;
+                width: calc(100% - 20px);
+                height: 250px;
+            }
+
+            h4 {
+                font-size: 1.2em;
+            }
+
+            .change-quote-btn {
+                bottom: 140px;
+                left: 10px;
+                width: calc(100% - 20px);
+                padding: 8px 16px;
+                font-size: 0.9em;
+            }
+
+            .share-btn {
+                bottom: 80px;
+                left: 10px;
+                width: calc(100% - 20px);
+                padding: 8px 16px;
+                font-size: 0.9em;
+            }
+
+            .language-btn {
+                top: 80px;
+                left: 10px;
+                padding: 6px 12px;
+                font-size: 0.9em;
+            }
+
+            .comments-section {
+                left: 10px;
+                width: calc(100% - 20px);
+                padding: 10px;
+            }
+
+            .mirage {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="title">حب على طول</h1>
+    <button class="language-btn" id="languageBtn" onclick="changeLanguage()">English</button>
+    <div class="card">
+        <div class="card-front">
+            <h4 id="quote">بحبك فوق ما القلب يتحمل</h4>
+        </div>
+        <div class="card-back"></div>
+    </div>
+    <button class="change-quote-btn" id="changeQuoteBtn" onclick="changeQuote()">غيّر الجملة</button>
+    <button class="share-btn" id="shareBtn" onclick="shareQuote()">مشاركة</button>
+    <div class="comments-section">
+        <h3>التعليقات</h3>
+        <textarea class="comment-input" id="commentInput" placeholder="اكتب تعليقك هنا..."></textarea>
+        <button class="comment-btn" onclick="addComment()">إضافة تعليق</button>
+        <div class="comments-list" id="commentsList"></div>
+    </div>
+
+    <svg>
+        <filter id="distort">
+            <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="3" result="turbulence" seed="2">
+                <animate attributeName="baseFrequency" values="0.02;0.04;0.02" dur="3s" repeatCount="indefinite"/>
+            </feTurbulence>
+            <feDisplacementMap in2="turbulence" in="SourceGraphic" scale="25" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+    </svg>
+
+    <div class="mirage" id="mirage"></div>
+
+    <script>
+        const mirage = document.getElementById('mirage');
+        const quoteElement = document.getElementById('quote');
+        const titleElement = document.getElementById('title');
+        const languageBtn = document.getElementById('languageBtn');
+        const changeQuoteBtn = document.getElementById('changeQuoteBtn');
+        const htmlElement = document.documentElement;
+
+        // Quotes arrays
+        const arabicQuotes = [
+            "بحبك فوق ما القلب يتحمل",
+            "عيونك دنيتي اللي بتحلى بيها",
+            "بين حضنك أنا بنسى الهموم",
+            "ضحكتك بتسرقني من الدنيا",
+            "نفسي أعيش العمر كله جنبك",
+            "لما بشوفك، الدنيا بتضحكلي",
+            "صوتك نغم بيرقص جوايا",
+            "بحب تفاصيلك الصغيرة قبل الكبيرة",
+            "معاك بحس إني طفل مدلل",
+            "كل لحظة معاك بالدنيا وما فيها",
+            "بغير عليك من الهوا اللي يلمسك",
+            "وجودك نعمة أنا بدعي ربنا عليها",
+            "بحبك أكتر ما الحروف تعرف تحكي",
+            "عيونك بتحكيلي حكايات حب",
+            "بدوب فيك من أول كلمة",
+            "حضنك وطن وأنا الغريب اللي ارتاح فيه",
+            "قلبي بيطير من الفرح لما بشوفك",
+            "لو غبت ثانية، بحس الدنيا ناقصة",
+            "كل حلم جميل لقيته فيك",
+            "إنتِ النور اللي مطمنني وأنا خايف",
+            "بعشق طريقة كلامك وضحكتك",
+            "مهما طال البُعد، قلبي ليكي",
+            "بحبك كأنك أول وآخر حب",
+            "معاك كل حاجة ليها طعم تاني",
+            "مفيش أجمل من حضنك ف عز البرد",
+            "إنتِ فرحتي اللي مستنّيها من زمان",
+            "نفسي أعيش العمر كله في عيونك",
+            "بحس إني بملك الدنيا لما تبصيلي",
+            "بحبك فوق حدود الجنون",
+            "دفا إيدك أحن من كل الكون",
+            "معاك الضحكة بتيجي من القلب",
+            "بحبك رغم الزعل والخصام",
+            "معاك الأيام حلوة، حتى في زعلها",
+            "حبك مالي قلبي وماسك روحي",
+            "لما تبتسمي، كل حاجة بتهون",
+            "بحبك كأنك النفس اللي عايش بيه",
+            "عيونك دي بلسم لقلبي المجروح",
+            "مفيش حاجة بتفرحني زي كلامك الحلو",
+            "بحس بيكي من قبل ما تتكلمي",
+            "بحب كل حاجة فيكي، حتى عفويتك",
+            "إنتِ بجد نصفي اللي ضايع",
+            "من غيرك مفيش لون للدنيا",
+            "بحبك زي الطفل اللي بيحب أمه",
+            "معاك بنسى همومي وأوجاعي",
+            "بشتاقلك حتى وإنتِ معايا",
+            "كلامك دوا لكل أوجاعي",
+            "بحب أسمع صوتك قبل ما أنام",
+            "حضنك أمان ربنا بعتهولي",
+            "بعشق غلاوتك جوا قلبي",
+            "بحبك حب مش عارف أوصفه",
+            "بحبك حب ملوش آخر",
+            "ضحكتك بتنور لي عتمة قلبي",
+            "نفسي أبقى حضنك طول العمر",
+            "معاك الدنيا بقت أمان",
+            "لو كان للحب شكل، يبقى عيونك",
+            "معاك بحس إن الزمن بيوقف",
+            "من غيرك أنا ولا حاجة",
+            "حكايتنا أجمل من كل الحكايات",
+            "دفا حضنك بيطمن قلبي الخايف",
+            "بحبك حب مش بيقل، بالعكس بيزيد",
+            "لما تبعدي عني، الدنيا تبقى غريبة",
+            "وجودك جنبي بيخلي كل حاجة سهلة",
+            "في بعدك، بحس إن الوقت بيمشي تقيل",
+            "بحبك زي الحنين اللي مالي القلب",
+            "حبك عندي بالدنيا وما فيها",
+            "كل غنوة حب بحسها بتحكي عنك",
+            "بحبك زي أول مرة شوفتك فيها",
+            "في عيونك لقيت دنيتي الحلوة",
+            "نفسك معايا، وكأنك ساكنة جوا قلبي",
+            "لما تضحكي، قلبي بيرقص فرح",
+            "معاك بحس إني بعيش في حلم",
+            "مهما بعدنا، قلبي بيرجعلك",
+            "حبك مالي كل تفاصيل حياتي",
+            "كل كلمة منك بتدخل جوا روحي",
+            "عيونك أحلى مكان أهرب ليه",
+            "صوتك موسيقى بترقص قلبي",
+            "معاك بعيش أجمل حكاية",
+            "حضنك وطن وأنا عاشق الغربة فيه",
+            "بعشقك أكتر ما قلبي يقدر يوصف",
+            "كل يوم بحبك أكتر من قبله",
+            "حبك جوا دمي، ما بيفارقنيش",
+            "ضحكتك بتداوي كل وجعي",
+            "بحبك من قبل ما أعرف يعني إيه حب",
+            "في حضنك كل الحكايات بتنتهي",
+            "وجودك حياة لقلبي التايه",
+            "نفسي تبقي جمبي العمر كله",
+            "معاك الوقت ملوش قيمة.. كله حلو",
+            "بحب تفاصيلك اللي مفيش زيها",
+            "في قربك بحس بالسكينة",
+            "بحبك أكتر من كل الأغاني الحلوة",
+            "لما بشوفك، بنسى الدنيا واللي فيها",
+            "بعشقك لدرجة مش لاقي كلام يوصفها",
+            "حبك بيدفيني ف عز البرد",
+            "معاك الضحكة صافية من القلب",
+            "حضنك أمان مفيش زيه ف الدنيا",
+            "نفسي أبقى عنيك لما تحتاجي تشوفي",
+            "بحبك حب مش بيخلص مهما طال العمر",
+            "كل كلمة حب لسه قليلة عليكي",
+            "إنتِ الحلم اللي كل يوم بيتحقق",
+            "بحبك فوق الخيال والواقع كمان"
+        ];
+
+        const englishQuotes = [
+            "I love you more than my heart can bear",
+            "Your eyes are the world where my life blooms",
+            "In your arms, I forget all my worries",
+            "Your smile steals me away from this world",
+            "I wish to spend my whole life by your side",
+            "When I see you, the world smiles back at me",
+            "Your voice is a melody that dances inside me",
+            "I adore every little detail about you, big and small",
+            "With you, I feel like a spoiled child",
+            "Every moment with you is worth the whole world",
+            "I get jealous even of the air that touches you",
+            "Your presence is a blessing I always pray for",
+            "I love you more than words can ever express",
+            "Your eyes tell me stories of love",
+            "I melt into you from the very first word",
+            "Your hug is a homeland where my wandering soul finds peace",
+            "My heart soars with joy when I see you",
+            "If you’re gone for even a second, the world feels empty",
+            "Every beautiful dream, I found it in you",
+            "You’re the light that calms all my fears",
+            "I'm in love with the way you speak and laugh",
+            "No matter how far we are, my heart belongs to you",
+            "I love you like it’s my first and last love",
+            "With you, everything tastes sweeter",
+            "There's nothing more beautiful than your hug on a cold night",
+            "You’re the joy I've been waiting for all my life",
+            "I wish I could live forever within your eyes",
+            "I feel like I own the whole world when you look at me",
+            "I love you beyond the limits of madness",
+            "The warmth of your hands is gentler than the whole universe",
+            "With you, laughter comes straight from the heart",
+            "I love you even through fights and disagreements",
+            "Even our bad days together feel sweet",
+            "Your love fills my heart and holds my soul",
+            "When you smile, everything becomes easier",
+            "I love you like the air I breathe",
+            "Your eyes are a cure for my wounded heart",
+            "Nothing makes me happier than your sweet words",
+            "I feel you even before you speak",
+            "I love everything about you, even your little quirks",
+            "You are truly my missing half",
+            "Without you, the world loses its color",
+            "I love you like a child loves his mother",
+            "With you, I forget my sorrows and pains",
+            "I miss you even when you’re right next to me",
+            "Your words heal every crack in my soul",
+            "I love hearing your voice before I sleep",
+            "Your embrace is the safety God gifted me",
+            "I adore how precious you are to my heart",
+            "I love you with a love I can’t even describe",
+            "I love you with an endless love",
+            "Your smile lights up the darkness in my heart",
+            "I wish to live forever within your hug",
+            "With you, life feels safe and warm",
+            "If love had a face, it would be your eyes",
+            "With you, time stands still",
+            "Without you, I am nothing",
+            "Our story is more beautiful than any fairytale",
+            "The warmth of your hug soothes my trembling heart",
+            "My love for you doesn't fade — it only grows stronger",
+            "When you’re away, the world feels strange",
+            "Being with you makes everything easier",
+            "Without you, every moment feels heavy",
+            "I love you like the longing that fills the heart",
+            "Your love is worth more than the whole world to me",
+            "Every love song feels like it’s singing about you",
+            "I love you like the very first time I saw you",
+            "In your eyes, I found my beautiful world",
+            "Breathing with you feels like you're living inside my soul",
+            "When you laugh, my heart dances with joy",
+            "With you, I feel like I'm living in a dream",
+            "No matter how far we drift, my heart always finds its way back to you",
+            "Your love fills every little corner of my life",
+            "Every word from you seeps deep into my soul",
+            "Your eyes are the sweetest place to run away to",
+            "Your voice is a music that makes my heart dance",
+            "With you, I'm living the most beautiful love story",
+            "Your hug is a homeland, and I'm the traveler who found home in it",
+            "I adore you more than my heart could ever tell",
+            "Every day, I love you more than the day before",
+            "Your love runs in my veins; it never leaves me",
+            "Your laughter heals every pain in me",
+            "I loved you even before I knew what love was",
+            "In your hug, all stories find their happy ending",
+            "Your presence is life itself to my lost heart",
+            "I want you by my side for a lifetime",
+            "With you, time loses all meaning — it's all beautiful",
+            "I adore your unique little details",
+            "In your closeness, I find peace",
+            "I love you more than all the beautiful songs ever written",
+            "When I see you, I forget the world and everything in it",
+            "I adore you to a level words can't describe",
+            "Your love keeps me warm through the coldest nights",
+            "With you, every smile is pure and true",
+            "Your hug is a safe haven like no other",
+            "I wish I could be your eyes whenever you needed to see",
+            "My love for you will never end, no matter how long life lasts",
+            "Every word of love still feels too little for you",
+            "You are the dream that comes true every single day",
+            "I love you beyond fantasy and reality combined"
+        ];
+
+        let currentLanguage = 'ar';
+        let sharedQuoteIndex = new URLSearchParams(window.location.search).get('quote');
+
+        // Update mirage position
+        document.addEventListener('mousemove', (e) => {
+            mirage.style.left = `${e.clientX}px`;
+            mirage.style.top = `${e.clientY}px`;
+        });
+
+        // Load comments from JSON
+        function loadComments() {
+            fetch('comments.json')
+                .then(response => response.json())
+                .then(comments => {
+                    const commentsList = document.getElementById('commentsList');
+                    commentsList.innerHTML = '';
+                    comments.forEach(comment => {
+                        const commentDiv = document.createElement('div');
+                        commentDiv.className = 'comment';
+                        commentDiv.textContent = comment.text;
+                        commentsList.appendChild(commentDiv);
+                    });
+                })
+                .catch(error => console.error('Error loading comments:', error));
+        }
+
+        // Add comment to JSON
+        function addComment() {
+            const commentInput = document.getElementById('commentInput');
+            const commentText = commentInput.value.trim();
+            if (commentText === '') return;
+
+            // Load current comments
+            fetch('comments.json')
+                .then(response => response.json())
+                .then(comments => {
+                    // Add new comment
+                    comments.push({ text: commentText, timestamp: new Date().toISOString() });
+
+                    // Save updated comments
+                    fetch('comments.json', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(comments)
+                    })
+                    .then(() => {
+                        commentInput.value = '';
+                        loadComments();
+                    })
+                    .catch(error => console.error('Error saving comment:', error));
+                })
+                .catch(error => console.error('Error loading comments:', error));
+        }
+
+        // Change quote
+        function changeQuote() {
+            let quotes = currentLanguage === 'ar' ? arabicQuotes : englishQuotes;
+            let newQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            while (newQuote === quoteElement.textContent) {
+                newQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            }
+            quoteElement.textContent = newQuote;
+            quoteElement.style.opacity = 0;
+            quoteElement.style.animation = 'none';
+            setTimeout(() => {
+                quoteElement.style.animation = 'fadeIn 1s ease-in forwards';
+            }, 10);
+            window.history.replaceState(null, '', window.location.pathname);
+        }
+
+        // Share quote
+        function shareQuote() {
+            const quotes = currentLanguage === 'ar' ? arabicQuotes : englishQuotes;
+            const quoteIndex = quotes.indexOf(quoteElement.textContent);
+            const shareUrl = `${window.location.origin}${window.location.pathname}?quote=${quoteIndex}`;
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                alert(currentLanguage === 'ar' ? 'تم نسخ الرابط!' : 'Link copied!');
+            });
+        }
+
+        // Change language
+        function changeLanguage() {
+            currentLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
+            if (currentLanguage === 'ar') {
+                htmlElement.setAttribute('lang', 'ar');
+                htmlElement.setAttribute('dir', 'rtl');
+                document.getElementById('pageTitle').textContent = 'حب على طول';
+                titleElement.textContent = 'حب على طول';
+                quoteElement.textContent = sharedQuoteIndex && arabicQuotes[sharedQuoteIndex] ? arabicQuotes[sharedQuoteIndex] : arabicQuotes[Math.floor(Math.random() * arabicQuotes.length)];
+                changeQuoteBtn.textContent = 'غيّر الجملة';
+                document.getElementById('shareBtn').textContent = 'مشاركة';
+                languageBtn.textContent = 'English';
+                document.querySelector('.comments-section h3').textContent = 'التعليقات';
+                document.getElementById('commentInput').placeholder = 'اكتب تعليقك هنا...';
+                document.querySelector('.comment-btn').textContent = 'إضافة تعليق';
+            } else {
+                htmlElement.setAttribute('lang', 'en');
+                htmlElement.setAttribute('dir', 'ltr');
+                document.getElementById('pageTitle').textContent = 'Love Forever';
+                titleElement.textContent = 'Love Forever';
+                quoteElement.textContent = sharedQuoteIndex && englishQuotes[sharedQuoteIndex] ? englishQuotes[sharedQuoteIndex] : englishQuotes[Math.floor(Math.random() * englishQuotes.length)];
+                changeQuoteBtn.textContent = 'Change Quote';
+                document.getElementById('shareBtn').textContent = 'Share';
+                languageBtn.textContent = 'عربي';
+                document.querySelector('.comments-section h3').textContent = 'Comments';
+                document.getElementById('commentInput').placeholder = 'Write your comment here...';
+                document.querySelector('.comment-btn').textContent = 'Add Comment';
+            }
+            window.history.replaceState(null, '', window.location.pathname);
+            loadComments();
+        }
+
+        // Load shared quote from URL
+        if (sharedQuoteIndex) {
+            const index = parseInt(sharedQuoteIndex);
+            if (currentLanguage === 'ar' && arabicQuotes[index]) {
+                quoteElement.textContent = arabicQuotes[index];
+            } else if (currentLanguage === 'en' && englishQuotes[index]) {
+                quoteElement.textContent = englishQuotes[index];
+            }
+        }
+
+        // Load comments on page load
+        loadComments();
+    </script>
+</body>
+
+</html>
