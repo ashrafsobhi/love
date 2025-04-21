@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">حب على طول</title>
+    <title id="pageTitle">هحبك على طول</title>
     <style>
         body {
             background-image: url('https://nie-images.s3.amazonaws.com/gall_content/2017/11/2017_11$ugcphoto128_Tuesday_2017_222818414.jpg');
@@ -98,70 +98,63 @@
             }
         }
 
-        .change-quote-btn {
+        .icon-btn {
             position: absolute;
-            bottom: 220px;
             left: 20px; /* أقصى الشمال */
-            padding: 10px 20px;
+            width: 40px;
+            height: 40px;
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
             border: none;
-            border-radius: 5px;
+            border-radius: 50%;
             color: #ffffff;
-            font-size: 1em;
+            font-size: 1.5em;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.2s;
             z-index: 10;
-            width: 300px; /* نفس عرض البطاقة */
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .change-quote-btn:hover {
+        .icon-btn:hover {
             background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        .icon-btn:active {
+            transform: scale(0.95);
+        }
+
+        .change-quote-btn {
+            bottom: 220px;
         }
 
         .share-btn {
-            position: absolute;
             bottom: 160px;
-            left: 20px; /* أقصى الشمال */
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border: none;
-            border-radius: 5px;
-            color: #ffffff;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background 0.3s;
-            z-index: 10;
-            width: 300px; /* نفس عرض البطاقة */
-            text-align: center;
-        }
-
-        .share-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
         }
 
         .comments-btn {
-            position: absolute;
             bottom: 100px;
-            left: 20px; /* أقصى الشمال */
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border: none;
-            border-radius: 5px;
-            color: #ffffff;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background 0.3s;
-            z-index: 10;
-            width: 300px; /* نفس عرض البطاقة */
-            text-align: center;
         }
 
-        .comments-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
+        .icon-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 50px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .icon-btn:hover::after {
+            opacity: 1;
         }
 
         .language-btn {
@@ -312,28 +305,23 @@
                 font-size: 1.2em;
             }
 
+            .icon-btn {
+                left: 10px;
+                width: 36px;
+                height: 36px;
+                font-size: 1.3em;
+            }
+
             .change-quote-btn {
                 bottom: 200px;
-                left: 10px;
-                width: calc(100% - 20px);
-                padding: 8px 16px;
-                font-size: 0.9em;
             }
 
             .share-btn {
                 bottom: 140px;
-                left: 10px;
-                width: calc(100% - 20px);
-                padding: 8px 16px;
-                font-size: 0.9em;
             }
 
             .comments-btn {
                 bottom: 80px;
-                left: 10px;
-                width: calc(100% - 20px);
-                padding: 8px 16px;
-                font-size: 0.9em;
             }
 
             .language-btn {
@@ -357,7 +345,7 @@
 </head>
 
 <body>
-    <h1 id="title">حب على طول</h1>
+    <h1 id="title">هحبك على طول</h1>
     <button class="language-btn" id="languageBtn" onclick="changeLanguage()">English</button>
     <div class="card">
         <div class="card-front">
@@ -365,9 +353,9 @@
         </div>
         <div class="card-back"></div>
     </div>
-    <button class="change-quote-btn" id="changeQuoteBtn" onclick="changeQuote()">غيّر الجملة</button>
-    <button class="share-btn" id="shareBtn" onclick="shareQuote()">مشاركة</button>
-    <button class="comments-btn" id="commentsBtn" onclick="openComments()">التعليقات</button>
+    <button class="icon-btn change-quote-btn" data-tooltip="غيّر الجملة" onclick="changeQuote()">⟳</button>
+    <button class="icon-btn share-btn" data-tooltip="مشاركة" onclick="shareQuote()">↳</button>
+    <button class="icon-btn comments-btn" data-tooltip="التعليقات" onclick="openComments()">💬</button>
 
     <div class="modal" id="commentsModal">
         <div class="modal-content">
@@ -704,9 +692,9 @@
                 document.getElementById('pageTitle').textContent = 'حب على طول';
                 titleElement.textContent = 'حب على طول';
                 quoteElement.textContent = sharedQuoteIndex && arabicQuotes[sharedQuoteIndex] ? arabicQuotes[sharedQuoteIndex] : arabicQuotes[Math.floor(Math.random() * arabicQuotes.length)];
-                changeQuoteBtn.textContent = 'غيّر الجملة';
-                document.getElementById('shareBtn').textContent = 'مشاركة';
-                commentsBtn.textContent = 'التعليقات';
+                changeQuoteBtn.setAttribute('data-tooltip', 'غيّر الجملة');
+                document.getElementById('shareBtn').setAttribute('data-tooltip', 'مشاركة');
+                commentsBtn.setAttribute('data-tooltip', 'التعليقات');
                 languageBtn.textContent = 'English';
                 document.querySelector('.modal-content h3').textContent = 'التعليقات';
                 document.getElementById('commentInput').placeholder = 'اكتب تعليقك هنا...';
@@ -717,9 +705,9 @@
                 document.getElementById('pageTitle').textContent = 'Love Forever';
                 titleElement.textContent = 'Love Forever';
                 quoteElement.textContent = sharedQuoteIndex && englishQuotes[sharedQuoteIndex] ? englishQuotes[sharedQuoteIndex] : englishQuotes[Math.floor(Math.random() * englishQuotes.length)];
-                changeQuoteBtn.textContent = 'Change Quote';
-                document.getElementById('shareBtn').textContent = 'Share';
-                commentsBtn.textContent = 'Comments';
+                changeQuoteBtn.setAttribute('data-tooltip', 'Change Quote');
+                document.getElementById('shareBtn').setAttribute('data-tooltip', 'Share');
+                commentsBtn.setAttribute('data-tooltip', 'Comments');
                 languageBtn.textContent = 'عربي';
                 document.querySelector('.modal-content h3').textContent = 'Comments';
                 document.getElementById('commentInput').placeholder = 'Write your comment here...';
