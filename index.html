@@ -42,7 +42,7 @@
 
         .card {
             position: absolute;
-            bottom: 220px;
+            bottom: 280px;
             left: 20px; /* أقصى الشمال */
             transform: perspective(1000px) rotateY(0deg);
             width: 300px;
@@ -100,7 +100,7 @@
 
         .change-quote-btn {
             position: absolute;
-            bottom: 160px;
+            bottom: 220px;
             left: 20px; /* أقصى الشمال */
             padding: 10px 20px;
             background: rgba(255, 255, 255, 0.2);
@@ -122,7 +122,7 @@
 
         .share-btn {
             position: absolute;
-            bottom: 100px;
+            bottom: 160px;
             left: 20px; /* أقصى الشمال */
             padding: 10px 20px;
             background: rgba(255, 255, 255, 0.2);
@@ -139,6 +139,28 @@
         }
 
         .share-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .comments-btn {
+            position: absolute;
+            bottom: 100px;
+            left: 20px; /* أقصى الشمال */
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s;
+            z-index: 10;
+            width: 300px; /* نفس عرض البطاقة */
+            text-align: center;
+        }
+
+        .comments-btn:hover {
             background: rgba(255, 255, 255, 0.4);
         }
 
@@ -162,20 +184,52 @@
             background: rgba(255, 255, 255, 0.4);
         }
 
-        .comments-section {
-            position: absolute;
-            bottom: 20px;
-            left: 20px; /* أقصى الشمال */
-            width: 300px; /* نفس عرض البطاقة */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 20;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 10px;
             padding: 20px;
-            z-index: 10;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            color: #ffffff;
         }
 
-        .comments-section h3 {
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff0000;
             color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .close-btn:hover {
+            background: #cc0000;
+        }
+
+        .modal-content h3 {
             text-align: center;
             margin: 0 0 10px;
         }
@@ -248,7 +302,7 @@
             }
 
             .card {
-                bottom: 200px;
+                bottom: 260px;
                 left: 10px;
                 width: calc(100% - 20px);
                 height: 250px;
@@ -259,7 +313,7 @@
             }
 
             .change-quote-btn {
-                bottom: 140px;
+                bottom: 200px;
                 left: 10px;
                 width: calc(100% - 20px);
                 padding: 8px 16px;
@@ -267,6 +321,14 @@
             }
 
             .share-btn {
+                bottom: 140px;
+                left: 10px;
+                width: calc(100% - 20px);
+                padding: 8px 16px;
+                font-size: 0.9em;
+            }
+
+            .comments-btn {
                 bottom: 80px;
                 left: 10px;
                 width: calc(100% - 20px);
@@ -281,8 +343,7 @@
                 font-size: 0.9em;
             }
 
-            .comments-section {
-                left: 10px;
+            .modal-content {
                 width: calc(100% - 20px);
                 padding: 10px;
             }
@@ -306,11 +367,16 @@
     </div>
     <button class="change-quote-btn" id="changeQuoteBtn" onclick="changeQuote()">غيّر الجملة</button>
     <button class="share-btn" id="shareBtn" onclick="shareQuote()">مشاركة</button>
-    <div class="comments-section">
-        <h3>التعليقات</h3>
-        <textarea class="comment-input" id="commentInput" placeholder="اكتب تعليقك هنا..."></textarea>
-        <button class="comment-btn" onclick="addComment()">إضافة تعليق</button>
-        <div class="comments-list" id="commentsList"></div>
+    <button class="comments-btn" id="commentsBtn" onclick="openComments()">التعليقات</button>
+
+    <div class="modal" id="commentsModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeComments()">×</button>
+            <h3>التعليقات</h3>
+            <textarea class="comment-input" id="commentInput" placeholder="اكتب تعليقك هنا..."></textarea>
+            <button class="comment-btn" onclick="addComment()">إضافة تعليق</button>
+            <div class="comments-list" id="commentsList"></div>
+        </div>
     </div>
 
     <svg>
@@ -330,6 +396,8 @@
         const titleElement = document.getElementById('title');
         const languageBtn = document.getElementById('languageBtn');
         const changeQuoteBtn = document.getElementById('changeQuoteBtn');
+        const commentsBtn = document.getElementById('commentsBtn');
+        const commentsModal = document.getElementById('commentsModal');
         const htmlElement = document.documentElement;
 
         // Quotes arrays
@@ -548,6 +616,17 @@
             mirage.style.top = `${e.clientY}px`;
         });
 
+        // Open comments modal
+        function openComments() {
+            commentsModal.style.display = 'flex';
+            loadComments();
+        }
+
+        // Close comments modal
+        function closeComments() {
+            commentsModal.style.display = 'none';
+        }
+
         // Load comments from JSON
         function loadComments() {
             fetch('comments.json')
@@ -571,14 +650,11 @@
             const commentText = commentInput.value.trim();
             if (commentText === '') return;
 
-            // Load current comments
             fetch('comments.json')
                 .then(response => response.json())
                 .then(comments => {
-                    // Add new comment
                     comments.push({ text: commentText, timestamp: new Date().toISOString() });
 
-                    // Save updated comments
                     fetch('comments.json', {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
@@ -630,8 +706,9 @@
                 quoteElement.textContent = sharedQuoteIndex && arabicQuotes[sharedQuoteIndex] ? arabicQuotes[sharedQuoteIndex] : arabicQuotes[Math.floor(Math.random() * arabicQuotes.length)];
                 changeQuoteBtn.textContent = 'غيّر الجملة';
                 document.getElementById('shareBtn').textContent = 'مشاركة';
+                commentsBtn.textContent = 'التعليقات';
                 languageBtn.textContent = 'English';
-                document.querySelector('.comments-section h3').textContent = 'التعليقات';
+                document.querySelector('.modal-content h3').textContent = 'التعليقات';
                 document.getElementById('commentInput').placeholder = 'اكتب تعليقك هنا...';
                 document.querySelector('.comment-btn').textContent = 'إضافة تعليق';
             } else {
@@ -642,13 +719,14 @@
                 quoteElement.textContent = sharedQuoteIndex && englishQuotes[sharedQuoteIndex] ? englishQuotes[sharedQuoteIndex] : englishQuotes[Math.floor(Math.random() * englishQuotes.length)];
                 changeQuoteBtn.textContent = 'Change Quote';
                 document.getElementById('shareBtn').textContent = 'Share';
+                commentsBtn.textContent = 'Comments';
                 languageBtn.textContent = 'عربي';
-                document.querySelector('.comments-section h3').textContent = 'Comments';
+                document.querySelector('.modal-content h3').textContent = 'Comments';
                 document.getElementById('commentInput').placeholder = 'Write your comment here...';
                 document.querySelector('.comment-btn').textContent = 'Add Comment';
             }
             window.history.replaceState(null, '', window.location.pathname);
-            loadComments();
+            if (commentsModal.style.display === 'flex') loadComments();
         }
 
         // Load shared quote from URL
@@ -660,9 +738,6 @@
                 quoteElement.textContent = englishQuotes[index];
             }
         }
-
-        // Load comments on page load
-        loadComments();
     </script>
 </body>
 
